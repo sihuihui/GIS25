@@ -1,0 +1,59 @@
+---
+title: "In Class Exercise 1"
+author: "Goh Si Hui"
+date: "Aug 26 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  message: false
+  warning: false
+  freeze: true
+---
+
+# Getting Started
+
+For the purpose of this in-class exercise, we will load the following R packages:
+
+-   tidyverse
+
+-   sf
+
+-   tmap
+
+-   ggstatsplot 
+
+```{r}
+pacman::p_load(tidyverse,sf,tmap,ggstatsplot)
+```
+
+# Loading the Data 
+
+```{r}
+mpsz14_shp <- st_read(dsn = "data/geospatial/MPSZ-2014/",
+                      layer = "MP14_SUBZONE_WEB_PL")
+
+```
+
+```{r}
+#| eval: false 
+#| message: true
+#| warning: true
+mpsz14_kml <- st_read("data/geospatial/MPSZ-2014.kml")
+
+```
+
+```{r}
+mpsz19_shp <- st_read(dsn = "data/geospatial/MPSZ-2019/",
+                      layer = "MPSZ-2019") %>%
+  st_transform(crs=3414)
+
+```
+
+```{r}
+mpsz19_kml <- st_read("data/geospatial/MPSZ-2019.kml") %>%
+   st_transform(crs=3414)
+
+```
+
+
