@@ -1,0 +1,35 @@
+---
+title: "In Class Exercise 2"
+author: "Goh Si Hui"
+date: "Sep 2 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  message: false
+  warning: false
+  freeze: true
+---
+
+# Getting Started
+
+```{r}
+#| eval: false
+install.packages("maptools", repos = "https://packagemanager.posit.co/cran/2023-10-13")
+
+```
+
+```{r}
+pacman::p_load(sf, raster, spatstat, tmap, tidyverse) 
+
+```
+
+sp: import and store data sf: is a gis software. can read, write, convertion of data, single feature calculation can use sf to dissolve the boundaries using st_union(), st_intersects()
+
+use ppp if it is an sp object use as.ppp if it is an sf object
+
+sp object: use ppp and owin
+
+everytime need to do randomisation, remember to set seed at the start! e.g. when loading the packages
+
+when analysing whole of singapore, don't need to concern about edge correction However, when analysing certain region of singapore, then need to do edge correction cos there's edge effect.

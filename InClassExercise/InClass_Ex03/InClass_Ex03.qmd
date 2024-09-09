@@ -1,0 +1,28 @@
+---
+title: "In Class Exercise 3"
+author: "Goh Si Hui"
+date: "Sep 9 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  message: false
+  warning: false
+  freeze: true
+---
+
+Remember to check the imported data! 
+
+```{r}
+pacman::p_load(sf, spNetwork, tmap, tidyverse)
+
+```
+
+sf: for spatial data
+tidyverse: for non spatial data 
+spNetwork, different from specstat 
+
+```{r}
+devtools::install_github("jhagenauer/gwann")
+
+```
