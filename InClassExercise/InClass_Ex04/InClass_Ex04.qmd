@@ -11,3 +11,128 @@ execute:
   freeze: true
 ---
 
+```{r}
+pacman::p_load(tmap, GWmodel, sf, spdep, knitr, ggstatsplot, tidyverse)
+```
+
+```{r}
+hunan <- st_read(dsn = "data/geospatial", layer = "Hunan")
+
+```
+For this use case, we are not going to change the projection will use the Geodetic CRS. 
+This is a polygon, not multi polygon. 
+
+```{r}
+hunan2012 <- read_csv("data/aspatial/Hunan_2012.csv")
+
+```
+
+
+```{r}
+hunan1 <- left_join(hunan, hunan2012,
+                   by="County") 
+
+```
+Performing relational join, need to ensure that there is a common column in both dataset. 
+if there is no common column names in both dataset, need to define which are the common column in both dataset. 
+
+```{r}
+hunan2<- hunan1 %>%
+  select(1:3, 7, 15,16,31,32)
+
+```
+
+## Converting to Spatial Polygon Dataframe
+
+```{r}
+hunan_sp <- hunan2 %>%
+  as_Spatial()
+
+```
+
+
+```{r}
+
+bw_CV <- bw.gwr(GDPPC ~ 1, 
+                data = hunan_sp, 
+                approach = "CV", 
+                adaptive = TRUE,
+                kernel = "bisquare",
+                longlat = T) 
+
+```
+based on the results, number of optimum neighbour is 22. 
+
+```{r}
+bw_CV 
+
+```
+
+```{r}
+
+bw_AIC <- bw.gwr(GDPPC ~ 1, 
+                data = hunan_sp, 
+                approach = "AIC", 
+                adaptive = TRUE,
+                kernel = "bisquare",
+                longlat = T)  # distance would be in kilometres 
+
+```
+
+```{r}
+bw_AIC
+
+```
+
+based on the results, number of optimum neighbour is 22. 
+
+```{r}
+
+bw_CV_fixed<- bw.gwr(GDPPC ~ 1, 
+                data = hunan_sp, 
+                approach = "CV", 
+                adaptive = FALSE,
+                kernel = "bisquare",
+                longlat = T) 
+
+bw_CV_fixed
+```
+
+```{r}
+
+bw_AIC_fixed <- bw.gwr(GDPPC ~ 1, 
+                data = hunan_sp, 
+                approach = "AIC", 
+                adaptive = FALSE,
+                kernel = "bisquare",
+                longlat = T)  # distance would be in kilometres 
+
+bw_AIC_fixed
+```
+
+```{r}
+gwstat <- gwss(data = hunan_sp,
+               var = "GDPPC", 
+               bw = bw_AIC, 
+               kernel = "bisquare",
+               adaptive = TRUE,
+               longlat = T)
+
+gwstat
+```
+
+LM: Local Mean -> take each polygon and look for the average (mean) among the 22 neighbours 
+LSD: Local Standard Deviation - for each polygon's 22 nearest neighbour
+LVar: Local Variance for each polygon's 22 nearest neighbour
+LSke: Local Skewness for each polygon's 22 nearest neighbour
+LCV: Local Correlation Variance for each polygon's 22 nearest neighbour
+
+```{r}
+gwstat_df <- as.data.frame(gwstat$SDF)
+
+```
+
+```{r}
+hunan_gstat <- cbind(hunan2, gwstat_df)
+
+```
