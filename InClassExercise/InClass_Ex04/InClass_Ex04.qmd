@@ -42,6 +42,13 @@ hunan2<- hunan1 %>%
 
 ```
 
+```{r}
+tm_shape(hunan2) +
+  tm_polygons()+
+  tm_text("County", size = 0.5)
+
+```
+
 ## Converting to Spatial Polygon Dataframe
 
 ```{r}
@@ -136,3 +143,23 @@ gwstat_df <- as.data.frame(gwstat$SDF)
 hunan_gstat <- cbind(hunan2, gwstat_df)
 
 ```
+
+
+```{r}
+tmap_mode("plot")
+tm_shape(hunan_gstat) +
+  tm_fill("GDPPC_LM",
+          n = 5,
+          style = "quantile") + 
+  tm_borders(alpha = 0.5) + 
+  tm_layout(main.title = "Distribution of \n geographically weighted mean",
+            main.title.position = "center",
+            main.title.size = 1.2,
+            legend.height = 1.5,
+            legend.width = 1.5,
+            frame = TRUE) +
+  tm_shape(hunan2)+
+  tm_text("County", size = 0.5)
+
+```
+
