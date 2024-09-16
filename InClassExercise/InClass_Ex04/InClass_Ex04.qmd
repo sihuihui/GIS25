@@ -1,0 +1,13 @@
+---
+title: "In Class Exercise 4"
+author: "Goh Si Hui"
+date: "Sep 16 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  message: false
+  warning: false
+  freeze: true
+---
+
